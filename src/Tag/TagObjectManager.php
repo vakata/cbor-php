@@ -42,7 +42,7 @@ class TagObjectManager
         $value = $additionalInformation;
         if ($additionalInformation >= 24) {
             Assertion::string($data, 'Invalid data');
-            $value = gmp_intval(gmp_init(bin2hex($data), 16));
+            $value = bindec($data);
         }
         /** @var TagObject $class */
         $class = $this->getClassForValue($value);

@@ -47,9 +47,7 @@ final class NegativeBigIntegerTag extends Base
         if (!$this->object instanceof ByteStringObject) {
             return $this->object->getNormalizedData($ignoreTags);
         }
-        $integer = gmp_init(bin2hex($this->object->getValue()), 16);
-        $minusOne = gmp_init('-1', 10);
-
-        return gmp_strval(gmp_sub($minusOne, $integer), 10);
+        $integer = base_convert(bin2hex($this->object->getValue()), 16, 10);
+        return (string)(-1 - (int)$integer);
     }
 }

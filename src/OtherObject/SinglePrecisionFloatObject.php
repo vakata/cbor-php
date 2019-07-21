@@ -44,7 +44,7 @@ final class SinglePrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $single = gmp_intval(gmp_init(bin2hex($data), 16));
+        $single = bindec($data);
         $exp = ($single >> 23) & 0xff;
         $mant = $single & 0x7fffff;
 
@@ -63,7 +63,7 @@ final class SinglePrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $single = gmp_intval(gmp_init(bin2hex($data), 16));
+        $single = bindec($data);
 
         return ($single >> 23) & 0xff;
     }
@@ -72,7 +72,7 @@ final class SinglePrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $single = gmp_intval(gmp_init(bin2hex($data), 16));
+        $single = bindec($data);
 
         return $single & 0x7fffff;
     }
@@ -81,7 +81,7 @@ final class SinglePrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $single = gmp_intval(gmp_init(bin2hex($data), 16));
+        $single = bindec($data);
 
         return 1 === ($single >> 31) ? -1 : 1;
     }

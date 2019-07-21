@@ -76,15 +76,6 @@ final class BigFloatTag extends Base
             return $this->object->getNormalizedData($ignoreTags);
         }
 
-        return rtrim(
-            bcmul(
-                $m->getNormalizedData($ignoreTags),
-                bcpow(
-                    '2',
-                    $e->getNormalizedData($ignoreTags),
-                    100),
-                100),
-            '0'
-        );
+        return $m->getNormalizedData($ignoreTags) * pow(2, $e->getNormalizedData($ignoreTags));
     }
 }

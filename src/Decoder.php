@@ -72,16 +72,16 @@ final class Decoder
             case 0b001: //1
                 return SignedIntegerObject::createObjectForValue($ai, $val);
             case 0b010: //2
-                $length = null === $val ? $ai : gmp_intval(gmp_init(bin2hex($val), 16));
+                $length = null === $val ? $ai : (int)base_convert(bin2hex($val), 16, 10);
 
                 return new ByteStringObject($stream->read($length));
             case 0b011: //3
-                $length = null === $val ? $ai : gmp_intval(gmp_init(bin2hex($val), 16));
+                $length = null === $val ? $ai : (int)base_convert(bin2hex($val), 16, 10);
 
                 return new TextStringObject($stream->read($length));
             case 0b100: //4
                 $object = new ListObject();
-                $nbItems = null === $val ? $ai : gmp_intval(gmp_init(bin2hex($val), 16));
+                $nbItems = null === $val ? $ai : (int)base_convert(bin2hex($val), 16, 10);
                 for ($i = 0; $i < $nbItems; ++$i) {
                     $object->add($this->process($stream));
                 }
@@ -89,7 +89,7 @@ final class Decoder
                 return $object;
             case 0b101: //5
                 $object = new MapObject();
-                $nbItems = null === $val ? $ai : gmp_intval(gmp_init(bin2hex($val), 16));
+                $nbItems = null === $val ? $ai : (int)base_convert(bin2hex($val), 16, 10);
                 for ($i = 0; $i < $nbItems; ++$i) {
                     $object->add($this->process($stream), $this->process($stream));
                 }

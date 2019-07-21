@@ -26,8 +26,6 @@
     "require": {
         "php": "^7.1|^8.0",
         "spomky-labs/base64url": "^1.0|^2.0",
-        "ext-gmp": "*",
-        "ext-bcmath": "*",
         "thecodingmachine/safe": "^0.1.13",
         "beberlei/assert": "^3.2"
     },

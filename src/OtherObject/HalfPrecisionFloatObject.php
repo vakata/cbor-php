@@ -44,7 +44,7 @@ final class HalfPrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $half = gmp_intval(gmp_init(bin2hex($data), 16));
+        $half = bindec($data);
         $exp = ($half >> 10) & 0x1f;
         $mant = $half & 0x3ff;
 
@@ -63,7 +63,7 @@ final class HalfPrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $half = gmp_intval(gmp_init(bin2hex($data), 16));
+        $half = bindec($data);
 
         return ($half >> 10) & 0x1f;
     }
@@ -72,7 +72,7 @@ final class HalfPrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $half = gmp_intval(gmp_init(bin2hex($data), 16));
+        $half = bindec($data);
 
         return $half & 0x3ff;
     }
@@ -81,7 +81,7 @@ final class HalfPrecisionFloatObject extends Base
     {
         $data = $this->data;
         Assertion::string($data, 'Invalid data');
-        $half = gmp_intval(gmp_init(bin2hex($data), 16));
+        $half = bindec($data);
 
         return 1 === ($half >> 15) ? -1 : 1;
     }

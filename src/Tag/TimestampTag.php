@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CBOR\Tag;
 
 use CBOR\CBORObject;
-use CBOR\OtherObject\DoublePrecisionFloatObject;
 use CBOR\OtherObject\HalfPrecisionFloatObject;
 use CBOR\OtherObject\SinglePrecisionFloatObject;
 use CBOR\TagObject as Base;
@@ -34,7 +33,7 @@ final class TimestampTag extends Base
 
     public static function create(CBORObject $object): Base
     {
-        if (!$object instanceof UnsignedIntegerObject && !$object instanceof HalfPrecisionFloatObject && !$object instanceof SinglePrecisionFloatObject && !$object instanceof DoublePrecisionFloatObject) {
+        if (!$object instanceof UnsignedIntegerObject && !$object instanceof HalfPrecisionFloatObject && !$object instanceof SinglePrecisionFloatObject) {
             throw new \InvalidArgumentException('This tag only accepts a Byte String object.');
         }
 
@@ -51,7 +50,6 @@ final class TimestampTag extends Base
                 return \DateTimeImmutable::createFromFormat('U', \strval($this->object->getNormalizedData($ignoreTags)));
             case $this->object instanceof HalfPrecisionFloatObject:
             case $this->object instanceof SinglePrecisionFloatObject:
-            case $this->object instanceof DoublePrecisionFloatObject:
                 return \DateTimeImmutable::createFromFormat('U.u', \strval($this->object->getNormalizedData($ignoreTags)));
             default:
                 return $this->object->getNormalizedData($ignoreTags);

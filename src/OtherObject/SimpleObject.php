@@ -33,7 +33,7 @@ final class SimpleObject extends Base
             return $this->getAdditionalInformation();
         }
 
-        return gmp_intval(gmp_init(bin2hex($this->data), 16));
+        return bindec($this->data);
     }
 
     /**

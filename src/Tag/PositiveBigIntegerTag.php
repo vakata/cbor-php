@@ -48,6 +48,6 @@ final class PositiveBigIntegerTag extends Base
             return $this->object->getNormalizedData($ignoreTags);
         }
 
-        return gmp_strval(gmp_init(bin2hex($this->object->getValue()), 16), 10);
+        return base_convert(bin2hex($this->object->getValue()), 16, 10);
     }
 }

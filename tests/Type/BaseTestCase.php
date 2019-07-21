@@ -39,7 +39,6 @@ class BaseTestCase extends TestCase
             $otherObjectManager->add(OtherObject\UndefinedObject::class);
             $otherObjectManager->add(OtherObject\HalfPrecisionFloatObject::class);
             $otherObjectManager->add(OtherObject\SinglePrecisionFloatObject::class);
-            $otherObjectManager->add(OtherObject\DoublePrecisionFloatObject::class);
 
             $tagObjectManager = new TagObjectManager();
             $tagObjectManager->add(Tag\EpochTag::class);

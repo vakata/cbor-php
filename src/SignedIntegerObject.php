@@ -33,31 +33,31 @@ final class SignedIntegerObject extends AbstractCBORObject
         return new self($additionalInformation, $data);
     }
 
-    public static function createFromGmpValue(\GMP $value): self
+    public static function createFromGmpValue($value): self
     {
-        if (gmp_cmp($value, gmp_init(0)) >= 0) {
+        $value = (int)$value;
+        if ($value >= 0) {
             throw new \InvalidArgumentException('The value must be a negative integer.');
         }
 
-        $minusOne = gmp_init(-1);
-        $computed_value = gmp_sub($minusOne, $value);
+        $computed_value = $value - 1;
 
         switch (true) {
-            case gmp_intval($computed_value) < 24:
-                $ai = gmp_intval($computed_value);
+            case $computed_value < 24:
+                $ai = $computed_value;
                 $data = null;
                 break;
-            case gmp_cmp($computed_value, gmp_init('FF', 16)) < 0:
+            case $computed_value < (int)base_convert('FF', 16, 10):
                 $ai = 24;
-                $data = \Safe\hex2bin(str_pad(gmp_strval($computed_value, 16), 2, '0', STR_PAD_LEFT));
+                $data = \Safe\hex2bin(str_pad(dechex($computed_value), 2, '0', STR_PAD_LEFT));
                 break;
-            case gmp_cmp($computed_value, gmp_init('FFFF', 16)) < 0:
+            case $computed_value < (int)base_convert('FFFF', 16, 10):
                 $ai = 25;
-                $data = \Safe\hex2bin(str_pad(gmp_strval($computed_value, 16), 4, '0', STR_PAD_LEFT));
+                $data = \Safe\hex2bin(str_pad(dechex($computed_value), 4, '0', STR_PAD_LEFT));
                 break;
-            case gmp_cmp($computed_value, gmp_init('FFFFFFFF', 16)) < 0:
+            case $computed_value < (int)base_convert('FFFFFFFF', 16, 10):
                 $ai = 26;
-                $data = \Safe\hex2bin(str_pad(gmp_strval($computed_value, 16), 8, '0', STR_PAD_LEFT));
+                $data = \Safe\hex2bin(str_pad(dechex($computed_value), 8, '0', STR_PAD_LEFT));
                 break;
             default:
                 throw new \InvalidArgumentException('Out of range. Please use NegativeBigIntegerTag tag with ByteStringObject object instead.');
@@ -77,11 +77,7 @@ final class SignedIntegerObject extends AbstractCBORObject
             return (string) (-1 - $this->additionalInformation);
         }
 
-        $result = gmp_init(bin2hex($this->data), 16);
-        $minusOne = gmp_init(-1);
-        $result = gmp_sub($minusOne, $result);
-
-        return gmp_strval($result, 10);
+        return (string) (-1 - bindec($this->data));
     }
 
     public function __toString(): string

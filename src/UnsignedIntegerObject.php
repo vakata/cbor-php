@@ -33,28 +33,29 @@ final class UnsignedIntegerObject extends AbstractCBORObject
         return new self($additionalInformation, $data);
     }
 
-    public static function createFromGmpValue(\GMP $value): self
+    public static function createFromGmpValue($value): self
     {
-        if (gmp_cmp($value, gmp_init(0)) < 0) {
+        $value = (int)$value;
+        if ($value < 0) {
             throw new \InvalidArgumentException('The value must be a positive integer.');
         }
 
         switch (true) {
-            case gmp_cmp($value, gmp_init(24)) < 0:
-                $ai = gmp_intval($value);
+            case $value < 24:
+                $ai = $value;
                 $data = null;
                 break;
-            case gmp_cmp($value, gmp_init('FF', 16)) < 0:
+            case $value < (int)base_convert('FF', 16, 10):
                 $ai = 24;
-                $data = \Safe\hex2bin(str_pad(gmp_strval($value, 16), 2, '0', STR_PAD_LEFT));
+                $data = \Safe\hex2bin(str_pad(dechex($value), 2, '0', STR_PAD_LEFT));
                 break;
-            case gmp_cmp($value, gmp_init('FFFF', 16)) < 0:
+            case $value < (int)base_convert('FFFF', 16, 10):
                 $ai = 25;
-                $data = \Safe\hex2bin(str_pad(gmp_strval($value, 16), 4, '0', STR_PAD_LEFT));
+                $data = \Safe\hex2bin(str_pad(dechex($value), 4, '0', STR_PAD_LEFT));
                 break;
-            case gmp_cmp($value, gmp_init('FFFFFFFF', 16)) < 0:
+            case $value < (int)base_convert('FFFFFFFF', 16, 10):
                 $ai = 26;
-                $data = \Safe\hex2bin(str_pad(gmp_strval($value, 16), 8, '0', STR_PAD_LEFT));
+                $data = \Safe\hex2bin(str_pad(dechex($value), 8, '0', STR_PAD_LEFT));
                 break;
             default:
                 throw new \InvalidArgumentException('Out of range. Please use PositiveBigIntegerTag tag with ByteStringObject object instead.');
@@ -84,7 +85,7 @@ final class UnsignedIntegerObject extends AbstractCBORObject
             return \strval($this->additionalInformation);
         }
 
-        return gmp_strval(gmp_init(bin2hex($this->data), 16), 10);
+        return base_convert(bin2hex($this->data), 16, 10);
     }
 
     public function __toString(): string
